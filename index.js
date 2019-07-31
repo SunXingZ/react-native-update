@@ -11,6 +11,14 @@ const bundleName = Platform.OS == "ios" ? iosBundleName : androidBundleName;
 const bundleDir = `${DocumentDirectoryPath}/JSBundle`;
 const platformDir = `${bundleDir}/${Platform.OS}_${DeviceInfo.getVersion()}`;
 
+const upzipBundleFile = async (callback) => {
+  const platformDirExists = await exists(platformDir).then((exists) => exists).catch(() => false);
+  if (platformDirExists) {
+    await unlink(platformDir);
+  }
+  callback && callback();
+};
+
 Hotupdate.bundleFileExists = async() => {
   const bundleFile = `${platformDir}/${bundleName}`;
   const bundleFileExists = await exists(bundleFile).then((exists) => exists).catch(() => false);
@@ -34,7 +42,8 @@ Hotupdate.downloadJSBundleFromServer = async(downloadUrl, progress, callback) =>
   downloadFile(options).promise.then((response) => {
     // 解压zip文件
     if (response.statusCode == 200) {
-      unzip(zipFile, bundleDir)
+      upzipBundleFile(() => {
+        unzip(zipFile, bundleDir)
         .then((path) => {
           callback({
             path,
@@ -50,6 +59,7 @@ Hotupdate.downloadJSBundleFromServer = async(downloadUrl, progress, callback) =>
         .finally(() => {
           unlink(zipFile);
         });
+      });
     } else {
       callback({
         error: "下载失败",
@@ -69,4 +79,3 @@ Hotupdate.reloadJSBundle = () => {
 }
 
 export default Hotupdate;
-
