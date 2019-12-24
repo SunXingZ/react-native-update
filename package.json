@@ -1,16 +1,17 @@
 
 {
-  "name": "react-native-update",
+  "name": "@sunxingzhe/react-native-update",
   "version": "1.0.1",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "publish": "npm publish --access public --registry http://registry.npmjs.org"
   },
   "keywords": [
     "react-native"
   ],
-  "author": "",
+  "author": "sunxingzhe",
   "license": "",
   "peerDependencies": {
     "react-native": "^0.41.2",
