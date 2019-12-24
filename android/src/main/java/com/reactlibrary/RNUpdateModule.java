@@ -27,10 +27,13 @@ import java.lang.reflect.Field;
 public class RNUpdateModule extends ReactContextBaseJavaModule {
 
   private final ReactApplicationContext reactContext;
+  private static boolean ActionViewVisible = false;
+  static ReactApplicationContext RCTContext;
 
   public RNUpdateModule(ReactApplicationContext reactContext) {
     super(reactContext);
     this.reactContext = reactContext;
+    RCTContext = reactContext;
   }
 
   @Override
@@ -119,7 +122,7 @@ public class RNUpdateModule extends ReactContextBaseJavaModule {
                 public void onHostResume() {
                     if(ActionViewVisible)
                         promise.resolve(null);
-                    this.reactContext.removeLifecycleEventListener(this);
+                    RCTContext.removeLifecycleEventListener(this);
                 }
 
                 @Override
@@ -132,7 +135,7 @@ public class RNUpdateModule extends ReactContextBaseJavaModule {
 
                 }
             };
-            this.reactContext.addLifecycleEventListener(listener);
+            RCTContext.addLifecycleEventListener(listener);
         } catch(Exception ex) {
             promise.reject("EUNSPECIFIED", ex.getLocalizedMessage());
         }
