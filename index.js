@@ -36,7 +36,7 @@ Hotupdate.downloadJSBundleFromServer = async(downloadUrl, progress, callback) =>
     toFile: zipFile,
     background: false,
     progress: (res) => {
-      progress(parseInt((res.bytesWritten / res.contentLength) * 100));
+      progress(parseInt((res.bytesWritten / res.contentLength) * 100), res.contentLength);
     }
   };
   downloadFile(options).promise.then((response) => {
